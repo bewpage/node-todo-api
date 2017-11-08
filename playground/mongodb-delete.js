@@ -6,34 +6,27 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
     }
     console.log('Connected to MongoDB server');
 
-    // db.collection('Todos').find().toArray().then((docs) => {
+    //deleteMany
+    // db.collection('Todos').deleteMany({text: 'Eat lunch').then((result) => {
     //     console.log('Todos');
-    //     console.log(JSON.stringify(docs, undefined, 2));
+    //     console.log(JSON.stringify(result, undefined, 2));
     // }, (err) => {
     //     console.log('Unable to fetch todos', err);
     // });
 
-    // **** toArray() method
-    // db.collection('Todos').find({
-    //     _id: new ObjectID('59fb5d8411e7459efe1245b1')
-    // }).toArray().then((docs) => {
+    // **** deleteOne() method
+    // db.collection('Todos').deleteOne({
+    //     text: 'Eat lunch'
+    // }).then((result) => {
     //     console.log('Todos');
-    //     console.log(JSON.stringify(docs, undefined, 2));
+    //     console.log(JSON.stringify(result, undefined, 2));
     // }, (err) => {
     //     console.log('Unable to fetch todos', err);
     // });
 
-    db.collection('Todos').find().count().then((count) => {
-        console.log(`Todos count: ${count}`);
-    }, (err) => {
-        console.log('Unable to fetch Todos', err);
-    });
-
-    db.collection('Users').find({
-        name: 'Michal'
-    }).toArray().then((docs) => {
-        console.log('Todos count');
-        console.log(JSON.stringify(docs, undefined, 2));
+    //findOneAndDelete()
+    db.collection('Todos').findOneAndDelete({completed: false}).then((result) => {
+        console.log(result);
     }, (err) => {
         console.log('Unable to fetch Todos', err);
     });
