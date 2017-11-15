@@ -4,6 +4,7 @@ const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectId} = require('mongodb');
+const bcrypt = require('bcryptjs');
 
 const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
@@ -121,6 +122,39 @@ app.post('/users', (req, res) => {
 //Middleware function for authenticate
 app.get('/users/me', authenticate, (req, res) => {
     res.send(req.user);
+});
+
+//POST /users/login {email, password}
+
+app.post('/users/login', (req, res) => {
+    const body = _.pick(req.body, ['email', 'password']);
+    const email = body.email;
+    const password = body.password;
+
+    User.findByCredentials(email, password).then((user) => {
+        return user.generateAuthToken().then((token) => {
+            res.header('x-auth', token).send(user);
+        })
+    }).catch((e) =>{
+        res.status(400).send(e);
+    });
+
+   // User.findOne({email}).then((user) => {
+   //     if(!user){
+   //         return res.status(404).send(`user ${email} not found`);
+   //     }
+   //     //validate password
+   //     const hashedPassword = user.password;
+   //     bcrypt.compare(password, hashedPassword, (err, respond) => {
+   //         if(respond){
+   //             return res.send(`your are loged in as ${user.email}`);
+   //         }else {
+   //             res.status(404).send('invalid password');
+   //         }
+   //     });
+   // }).catch((e) => {
+   //     res.status(400).send();
+   // })
 });
 
 
