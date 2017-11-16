@@ -125,7 +125,6 @@ app.get('/users/me', authenticate, (req, res) => {
 });
 
 //POST /users/login {email, password}
-
 app.post('/users/login', (req, res) => {
     const body = _.pick(req.body, ['email', 'password']);
     const email = body.email;
@@ -136,25 +135,9 @@ app.post('/users/login', (req, res) => {
             res.header('x-auth', token).send(user);
         })
     }).catch((e) =>{
+        console.log();
         res.status(400).send(e);
     });
-
-   // User.findOne({email}).then((user) => {
-   //     if(!user){
-   //         return res.status(404).send(`user ${email} not found`);
-   //     }
-   //     //validate password
-   //     const hashedPassword = user.password;
-   //     bcrypt.compare(password, hashedPassword, (err, respond) => {
-   //         if(respond){
-   //             return res.send(`your are loged in as ${user.email}`);
-   //         }else {
-   //             res.status(404).send('invalid password');
-   //         }
-   //     });
-   // }).catch((e) => {
-   //     res.status(400).send();
-   // })
 });
 
 
