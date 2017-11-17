@@ -4,3 +4,4 @@ package-lock.json
 server.log
 Procfile
 
+/server/config/config.json
